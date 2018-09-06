@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<driversList>
+    <devGroup group="Focusers">
+        <device label="Buinskii Focuser">
+                <driver name="Buinskii Focuser">indi_buinskii_focuser</driver>
+                <version>0.1</version>
+        </device>
+    </devGroup>
+</driversList>
