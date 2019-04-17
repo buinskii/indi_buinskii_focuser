@@ -6,6 +6,7 @@ cmake_minimum_required(VERSION 2.4.7)
 
 PROJECT(indi_buinskii_focuser CXX C)
 include(ExternalProject)
+set(CMAKE_INSTALL_PREFIX "/usr")
 
 set (VERSION_MAJOR 0)
 set (VERSION_MINOR 1)
