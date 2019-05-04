@@ -24,6 +24,7 @@ class BuinskiiFocuserSerialClient
 		int setSpeed(int speed);
         int getSpeed(int *currentSpeed);
 		int setAcceleration(int acceleration);
+        int getAcceleration(int *currentAcceleration);
 		int setPosition(int position);
 		int setRevers(int revers);
 		int moveTo(int position);

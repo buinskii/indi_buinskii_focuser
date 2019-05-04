@@ -53,10 +53,25 @@ int BuinskiiFocuserSerialClient::getSpeed(int *currentSpeed) {
 }
 
 int BuinskiiFocuserSerialClient::setAcceleration(int acceleration) {
-	std::string cmd = "A ";
-	cmd.append(std::to_string(acceleration));
+    std::string cmd = "SA ";
+    cmd.append(std::to_string(acceleration));
 
-	return request(cmd, nullptr);
+    return request(cmd, nullptr);
+}
+
+int BuinskiiFocuserSerialClient::getAcceleration(int *currentAcceleration) {
+    std::string *result = new std::string();
+
+    int success = request("GA", result);
+    if (!success) {
+        delete result;
+        return success;
+    }
+
+    *currentAcceleration = atoi(result->c_str());
+
+    delete result;
+    return 1;
 }
 
 int BuinskiiFocuserSerialClient::setRevers(int revers) {
