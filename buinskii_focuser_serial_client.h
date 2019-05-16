@@ -7,13 +7,12 @@ class BuinskiiFocuserSerialClient
     protected:
     private:
 
-        int verbose = false;
         int serialportFD = {-1};
 
-        void printMessage(const char *fmt, ...);
         int writeSerial(const char *buffer, int numberOfBytes);
         int readSerial(char *buffer, int numberOfBytes);
         int request(std::string command, std::string *response);
+        const uint8_t READ_TIMEOUT = 3;
 
     public:
         BuinskiiFocuserSerialClient();
