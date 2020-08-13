@@ -162,27 +162,14 @@ int BuinskiiFocuserSerialClient::request(std::string command, std::string *resul
     LOGF_DEBUG("[request] command=\"%s\"; size=%d", command.c_str(), fullCommand.size());
 	writeSerial(writeBuffer, fullCommand.size());
 
-    char received[1];
-	int receiveResult = 0;
-	int attempts = 0;
-	do {
-		receiveResult = readSerial(received, 1);
+    char received[256] = {0};
+	int receiveResult = readSerial(received);
+    if (receiveResult < 0) {
+        delete response;
+        return receiveResult;
+    }
 
-		if (receiveResult < 0 && attempts > 3) {
-			delete response;
-			return receiveResult;
-		}
-
-		if (receiveResult < 0) {
-            LOGF_DEBUG("[request] failed and received %s; %s", received, (int) received[1]);
-		    attempts++;
-            continue;
-		}
-
-		response->append(received);
-        LOGF_DEBUG("[request] now response is =\"%s\" received %s; cd=%s", response->c_str(), received, (int) received[1]);
-	} while (strcmp(received, "\n") != 0);
-
+    response->append(received);
 	response->erase(response->find_last_not_of(" \n\r\t#") + 1);
 
     LOGF_DEBUG("[request] command=\"%s\"; size=%d; response=\"%s\"", command.c_str(), fullCommand.size(), response->c_str());
@@ -255,11 +242,11 @@ int BuinskiiFocuserSerialClient::writeSerial(const char *buffer, int numberOfByt
 	return nbytes_written;
 }
 
-int BuinskiiFocuserSerialClient::readSerial(char *buffer, int numberOfBytes)
+int BuinskiiFocuserSerialClient::readSerial(char *buffer)
 {
-    int nbytes_read=0, tty_rc = 0;
 
-    if ( (tty_rc = tty_read(serialportFD, buffer, numberOfBytes, READ_TIMEOUT, &nbytes_read)) != TTY_OK)
+    int nbytes_read=0, tty_rc = 0;
+    if ( (tty_rc = tty_read_section(serialportFD, buffer, '\n', READ_TIMEOUT, &nbytes_read)) != TTY_OK)
     {
         char errorMessage[MAXRBUF];
         tty_error_msg(tty_rc, errorMessage, MAXRBUF);

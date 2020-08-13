@@ -10,7 +10,7 @@ class BuinskiiFocuserSerialClient
         int serialportFD = {-1};
 
         int writeSerial(const char *buffer, int numberOfBytes);
-        int readSerial(char *buffer, int numberOfBytes);
+        int readSerial(char *buffer);
         int request(std::string command, std::string *response);
         const uint8_t READ_TIMEOUT = 3;
 
