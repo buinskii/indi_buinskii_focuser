@@ -174,12 +174,13 @@ int BuinskiiFocuserSerialClient::request(std::string command, std::string *resul
 		}
 
 		if (receiveResult < 0) {
+            LOGF_DEBUG("[request] failed and received %s; %s", received, (int) received[1]);
 		    attempts++;
             continue;
 		}
 
 		response->append(received);
-        LOGF_DEBUG("[request] now response is =\"%s\" received %s", response->c_str(), received);
+        LOGF_DEBUG("[request] now response is =\"%s\" received %s; cd=%s", response->c_str(), received, (int) received[1]);
 	} while (strcmp(received, "\n") != 0);
 
 	response->erase(response->find_last_not_of(" \n\r\t#") + 1);
