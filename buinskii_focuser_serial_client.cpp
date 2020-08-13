@@ -168,7 +168,7 @@ int BuinskiiFocuserSerialClient::request(std::string command, std::string *resul
 	do {
 		receiveResult = readSerial(received, 1);
 
-		if (receiveResult < 0 && attempts > 5) {
+		if (receiveResult < 0 && attempts > 3) {
 			delete response;
 			return receiveResult;
 		}
